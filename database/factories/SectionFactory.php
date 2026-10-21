@@ -25,6 +25,7 @@ class SectionFactory extends Factory
             'title_highlight' => null,
             'subtitle' => fake()->paragraph(),
             'image' => null,
+            'secondary_image' => null,
             'background_image' => null,
             'image_caption' => null,
             'badge_text' => null,

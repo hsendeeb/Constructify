@@ -16,7 +16,7 @@ class NavigationLinkSeeder extends Seeder
             ['label' => 'Home', 'url' => '/#home', 'sort' => 1],
             ['label' => 'About', 'url' => '/#about', 'sort' => 2],
             ['label' => 'Services', 'url' => '/#services', 'sort' => 3],
-            ['label' => 'Projects', 'url' => '/projects', 'sort' => 4],
+            ['label' => 'Projects', 'url' => '/#projects', 'sort' => 4],
             ['label' => 'Contact', 'url' => '/#contact', 'sort' => 5],
         ];
 

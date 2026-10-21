@@ -13,8 +13,12 @@ class SiteLink
             return '#';
         }
 
-        if (str_starts_with($url, '#')) {
-            return rtrim(route('home'), '/').'/'.$url;
+        $anchor = self::anchor($url);
+
+        if ($anchor !== null) {
+            return request()->routeIs('home')
+                ? $anchor
+                : rtrim(route('home'), '/').'/'.$anchor;
         }
 
         if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://') || str_starts_with($url, 'mailto:') || str_starts_with($url, 'tel:')) {
@@ -22,6 +26,22 @@ class SiteLink
         }
 
         return url($url);
+    }
+
+    /**
+     * Extract a same-page fragment from "#section" or "/#section" links.
+     */
+    public static function anchor(?string $url): ?string
+    {
+        if (blank($url)) {
+            return null;
+        }
+
+        if (preg_match('/^\/?#([A-Za-z][\w-]*)$/', $url, $matches) === 1) {
+            return '#'.$matches[1];
+        }
+
+        return null;
     }
 
     /**

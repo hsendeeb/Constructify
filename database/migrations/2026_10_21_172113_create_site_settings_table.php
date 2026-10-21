@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('brand_name')->default('VioletPro');
+            $table->string('brand_name')->default('Constructify');
             $table->string('logo')->nullable();
             $table->string('tagline')->nullable();
             $table->string('phone')->nullable();

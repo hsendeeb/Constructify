@@ -9,7 +9,7 @@
         @else
             <div class="project-card__placeholder" aria-hidden="true">
                 <i class="bi bi-buildings"></i>
-                <span>{{ $project->category?->name ?: 'VioletPro' }}</span>
+                <span>{{ $project->category?->name ?: 'Constructify' }}</span>
             </div>
         @endif
 

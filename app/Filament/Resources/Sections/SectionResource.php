@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Sections;
 
 use App\Filament\Resources\Sections\Pages\EditSection;
 use App\Filament\Resources\Sections\Pages\ListSections;
+use App\Filament\Resources\Sections\RelationManagers\CountersRelationManager;
 use App\Filament\Resources\Sections\Schemas\SectionForm;
 use App\Filament\Resources\Sections\Tables\SectionsTable;
 use App\Models\Section;
@@ -41,6 +42,16 @@ class SectionResource extends Resource
     public static function table(Table $table): Table
     {
         return SectionsTable::configure($table);
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    public static function getRelations(): array
+    {
+        return [
+            CountersRelationManager::class,
+        ];
     }
 
     public static function canCreate(): bool

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasImageUrl;
+use Database\Factories\SectionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'title_highlight',
     'subtitle',
     'image',
+    'secondary_image',
     'background_image',
     'image_caption',
     'badge_text',
@@ -30,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 ])]
 class Section extends Model
 {
-    /** @use HasFactory<\Database\Factories\SectionFactory> */
+    /** @use HasFactory<SectionFactory> */
     use HasFactory;
 
     use HasImageUrl;

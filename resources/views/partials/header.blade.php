@@ -27,6 +27,7 @@
                 <ul class="navbar-nav site-nav mx-auto">
                     @foreach ($navigationLinks as $link)
                         @php
+                            $anchor = \App\Support\SiteLink::anchor($link->url);
                             $isActive = $isProjectsPage
                                 ? str_contains($link->url, 'projects')
                                 : (request()->routeIs('home') && str_contains($link->url, '#home'));
@@ -34,6 +35,7 @@
                         <li class="nav-item">
                             <a class="nav-link {{ $isActive ? 'active' : '' }}"
                                 href="{{ \App\Support\SiteLink::resolve($link->url) }}"
+                                @if ($anchor) data-nav-anchor="{{ $anchor }}" @endif
                                 @if ($link->target === '_blank') target="_blank" rel="noopener noreferrer" @endif
                                 @if ($isActive) aria-current="page" @endif>
                                 {{ $link->label }}

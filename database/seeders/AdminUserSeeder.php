@@ -14,9 +14,9 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         User::query()->updateOrCreate(
-            ['email' => env('ADMIN_EMAIL', 'admin@violetpro.test')],
+            ['email' => env('ADMIN_EMAIL', 'admin@constructify.test')],
             [
-                'name' => env('ADMIN_NAME', 'VioletPro Admin'),
+                'name' => env('ADMIN_NAME', 'Constructify Admin'),
                 'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
             ],
         );
