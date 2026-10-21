@@ -26,5 +26,6 @@
 
     @include('partials.contact', [
         'section' => $sections->get('contact'),
+        'contactCounters' => $contactCounters,
     ])
 @endsection

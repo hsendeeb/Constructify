@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'primary_button_url',
     'secondary_button_text',
     'secondary_button_url',
+    'map_embed_url',
     'is_active',
     'sort',
 ])]

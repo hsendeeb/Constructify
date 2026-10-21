@@ -55,4 +55,16 @@ class SiteLink
 
         return 'tel:'.preg_replace('/[^0-9+]/', '', $phone);
     }
+
+    /**
+     * Build a mailto URL from a display email address.
+     */
+    public static function email(?string $email): ?string
+    {
+        if (blank($email)) {
+            return null;
+        }
+
+        return 'mailto:'.trim($email);
+    }
 }

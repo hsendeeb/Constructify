@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasImageUrl;
+use Database\Factories\SiteSettingFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,12 +12,6 @@ use Illuminate\Database\Eloquent\Model;
     'brand_name',
     'logo',
     'tagline',
-    'phone',
-    'phone_secondary',
-    'email',
-    'address',
-    'working_hours',
-    'map_embed_url',
     'footer_text',
     'copyright',
     'meta_title',
@@ -26,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class SiteSetting extends Model
 {
-    /** @use HasFactory<\Database\Factories\SiteSettingFactory> */
+    /** @use HasFactory<SiteSettingFactory> */
     use HasFactory;
 
     use HasImageUrl;

@@ -11,9 +11,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -47,82 +47,69 @@ class ManageSiteSettings extends Page
         $this->form->fill(SiteSetting::current()->attributesToArray());
     }
 
+    public function defaultForm(Schema $schema): Schema
+    {
+        return $schema->statePath('data');
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Form::make([
-                    Tabs::make('Site settings')
-                        ->columnSpanFull()
-                        ->tabs([
-                            Tab::make('Brand')
-                                ->icon('heroicon-o-identification')
-                                ->schema([
-                                    Grid::make(2)->schema([
-                                        TextInput::make('brand_name')
-                                            ->required()
-                                            ->maxLength(255),
-                                        TextInput::make('tagline')
-                                            ->maxLength(255),
-                                        FileUpload::make('logo')
-                                            ->image()
-                                            ->disk('public')
-                                            ->directory('branding')
-                                            ->maxSize(4096)
-                                            ->helperText('Optional. The brand name is shown when no logo is uploaded.')
-                                            ->columnSpanFull(),
-                                        TextInput::make('header_cta_text')
-                                            ->maxLength(255)
-                                            ->helperText('Button shown at the right side of the header.'),
-                                        TextInput::make('header_cta_url')
-                                            ->maxLength(2048)
-                                            ->helperText('A path, anchor (#contact), or full URL.'),
-                                    ]),
-                                ]),
-                            Tab::make('Contact')
-                                ->icon('heroicon-o-phone')
-                                ->schema([
-                                    Grid::make(2)->schema([
-                                        TextInput::make('phone')
-                                            ->tel()
-                                            ->maxLength(255),
-                                        TextInput::make('phone_secondary')
-                                            ->tel()
-                                            ->maxLength(255),
-                                        TextInput::make('email')
-                                            ->email()
-                                            ->maxLength(255),
-                                        TextInput::make('working_hours')
-                                            ->maxLength(255),
-                                        TextInput::make('address')
-                                            ->maxLength(255)
-                                            ->columnSpanFull(),
-                                        TextInput::make('map_embed_url')
-                                            ->url()
-                                            ->maxLength(2048)
-                                            ->helperText('Optional Google Maps embed URL. The map is hidden when empty.')
-                                            ->columnSpanFull(),
-                                    ]),
-                                ]),
-                            Tab::make('Footer')
-                                ->icon('heroicon-o-bars-3-bottom-left')
-                                ->schema([
-                                    Textarea::make('footer_text')
-                                        ->rows(4)
+                Tabs::make('Site settings')
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make('Brand')
+                            ->icon('heroicon-o-identification')
+                            ->schema([
+                                Grid::make(2)->schema([
+                                    TextInput::make('brand_name')
+                                        ->required()
+                                        ->maxLength(255),
+                                    TextInput::make('tagline')
+                                        ->maxLength(255),
+                                    FileUpload::make('logo')
+                                        ->image()
+                                        ->disk('public')
+                                        ->directory('branding')
+                                        ->maxSize(4096)
+                                        ->helperText('Optional. The brand name is shown when no logo is uploaded.')
                                         ->columnSpanFull(),
-                                    TextInput::make('copyright')
-                                        ->maxLength(255),
+                                    TextInput::make('header_cta_text')
+                                        ->maxLength(255)
+                                        ->helperText('Button shown at the right side of the header.'),
+                                    TextInput::make('header_cta_url')
+                                        ->maxLength(2048)
+                                        ->helperText('A path, anchor (#contact), or full URL.'),
                                 ]),
-                            Tab::make('SEO')
-                                ->icon('heroicon-o-magnifying-glass')
-                                ->schema([
-                                    TextInput::make('meta_title')
-                                        ->maxLength(255),
-                                    Textarea::make('meta_description')
-                                        ->rows(4),
-                                ]),
-                        ]),
-                ])
+                            ]),
+                        Tab::make('Footer')
+                            ->icon('heroicon-o-bars-3-bottom-left')
+                            ->schema([
+                                Textarea::make('footer_text')
+                                    ->rows(4)
+                                    ->columnSpanFull(),
+                                TextInput::make('copyright')
+                                    ->maxLength(255),
+                            ]),
+                        Tab::make('SEO')
+                            ->icon('heroicon-o-magnifying-glass')
+                            ->schema([
+                                TextInput::make('meta_title')
+                                    ->maxLength(255),
+                                Textarea::make('meta_description')
+                                    ->rows(4),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public function content(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Form::make([EmbeddedSchema::make('form')])
+                    ->id('form')
                     ->livewireSubmitHandler('save')
                     ->footer([
                         Actions::make([
@@ -132,8 +119,7 @@ class ManageSiteSettings extends Page
                                 ->submit('save')
                                 ->keyBindings(['mod+s']),
                         ]),
-                    ])
-                    ->statePath('data'),
+                    ]),
             ]);
     }
 

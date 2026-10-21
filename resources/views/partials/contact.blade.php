@@ -1,7 +1,15 @@
 @if ($section)
     @php
-        $contactPhoneUrl = \App\Support\SiteLink::phone($siteSettings->phone);
-        $contactPhoneSecondaryUrl = \App\Support\SiteLink::phone($siteSettings->phone_secondary);
+        $phoneCard = \App\Support\ContactDetails::phone($contactCounters);
+        $emailCard = \App\Support\ContactDetails::email($contactCounters);
+
+        $primaryButtonUrl = str_starts_with((string) $section->primary_button_url, 'tel:')
+            ? $phoneCard?->link_url
+            : $section->primary_button_url;
+
+        $secondaryButtonUrl = str_starts_with((string) $section->secondary_button_url, 'mailto:')
+            ? $emailCard?->link_url
+            : $section->secondary_button_url;
     @endphp
 
     <section id="contact" class="contact-section">
@@ -22,17 +30,17 @@
                         <p class="section-lead">{{ $section->subtitle }}</p>
                     @endif
 
-                    @if ($section->primary_button_text || $section->secondary_button_text)
+                    @if (($section->primary_button_text && $primaryButtonUrl) || ($section->secondary_button_text && $secondaryButtonUrl))
                         <div class="contact-actions">
-                            @if ($section->primary_button_text)
-                                <a class="btn-vp btn-vp-primary" href="{{ \App\Support\SiteLink::resolve($section->primary_button_url) }}">
+                            @if ($section->primary_button_text && $primaryButtonUrl)
+                                <a class="btn-vp btn-vp-primary" href="{{ \App\Support\SiteLink::resolve($primaryButtonUrl) }}">
                                     {{ $section->primary_button_text }}
                                     <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                 </a>
                             @endif
 
-                            @if ($section->secondary_button_text)
-                                <a class="btn-vp btn-vp-outline" href="{{ \App\Support\SiteLink::resolve($section->secondary_button_url) }}">
+                            @if ($section->secondary_button_text && $secondaryButtonUrl)
+                                <a class="btn-vp btn-vp-outline" href="{{ \App\Support\SiteLink::resolve($secondaryButtonUrl) }}">
                                     {{ $section->secondary_button_text }}
                                     <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                 </a>
@@ -42,46 +50,27 @@
                 </div>
 
                 <div class="reveal">
-                    <div class="contact-cards">
-                        @if ($contactPhoneUrl)
-                            <div class="contact-card">
-                                <div class="contact-card__icon"><i class="bi bi-telephone" aria-hidden="true"></i></div>
-                                <div class="contact-card__label">Call us</div>
-                                <a href="{{ $contactPhoneUrl }}">{{ $siteSettings->phone }}</a>
-                                @if ($contactPhoneSecondaryUrl)
-                                    <a href="{{ $contactPhoneSecondaryUrl }}">{{ $siteSettings->phone_secondary }}</a>
-                                @endif
-                            </div>
-                        @endif
+                    @if ($contactCounters->isNotEmpty())
+                        <div class="contact-cards">
+                            @foreach ($contactCounters as $card)
+                                <div class="contact-card">
+                                    <div class="contact-card__icon">
+                                        <i class="bi {{ $card->icon ?: 'bi-info-circle' }}" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="contact-card__label">{{ $card->value }}</div>
+                                    @if ($card->link_url)
+                                        <a href="{{ \App\Support\SiteLink::resolve($card->link_url) }}">{{ $card->label }}</a>
+                                    @else
+                                        <span>{{ $card->label }}</span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
 
-                        @if ($siteSettings->email)
-                            <div class="contact-card">
-                                <div class="contact-card__icon"><i class="bi bi-envelope" aria-hidden="true"></i></div>
-                                <div class="contact-card__label">Email us</div>
-                                <a href="mailto:{{ $siteSettings->email }}">{{ $siteSettings->email }}</a>
-                            </div>
-                        @endif
-
-                        @if ($siteSettings->address)
-                            <div class="contact-card">
-                                <div class="contact-card__icon"><i class="bi bi-geo-alt" aria-hidden="true"></i></div>
-                                <div class="contact-card__label">Visit us</div>
-                                <span>{{ $siteSettings->address }}</span>
-                            </div>
-                        @endif
-
-                        @if ($siteSettings->working_hours)
-                            <div class="contact-card">
-                                <div class="contact-card__icon"><i class="bi bi-clock" aria-hidden="true"></i></div>
-                                <div class="contact-card__label">Working hours</div>
-                                <span>{{ $siteSettings->working_hours }}</span>
-                            </div>
-                        @endif
-                    </div>
-
-                    @if ($siteSettings->map_embed_url)
+                    @if ($section->map_embed_url)
                         <div class="contact-map">
-                            <iframe src="{{ $siteSettings->map_embed_url }}" title="Office location" loading="lazy"
+                            <iframe src="{{ $section->map_embed_url }}" title="Office location" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
                         </div>
                     @endif

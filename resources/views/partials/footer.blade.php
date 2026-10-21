@@ -1,6 +1,5 @@
 @php
     $footerLogo = $siteSettings->imageUrl('logo');
-    $footerPhoneUrl = \App\Support\SiteLink::phone($siteSettings->phone);
 @endphp
 
 <footer class="site-footer">
@@ -64,30 +63,16 @@
             <div>
                 <h2 class="footer-title">Contact</h2>
                 <ul class="footer-contact">
-                    @if ($siteSettings->address)
+                    @foreach ($contactCounters as $card)
                         <li>
-                            <i class="bi bi-geo-alt" aria-hidden="true"></i>
-                            <span>{{ $siteSettings->address }}</span>
+                            <i class="bi {{ $card->icon ?: 'bi-info-circle' }}" aria-hidden="true"></i>
+                            @if ($card->link_url)
+                                <a href="{{ \App\Support\SiteLink::resolve($card->link_url) }}">{{ $card->label }}</a>
+                            @else
+                                <span>{{ $card->label }}</span>
+                            @endif
                         </li>
-                    @endif
-                    @if ($footerPhoneUrl)
-                        <li>
-                            <i class="bi bi-telephone" aria-hidden="true"></i>
-                            <a href="{{ $footerPhoneUrl }}">{{ $siteSettings->phone }}</a>
-                        </li>
-                    @endif
-                    @if ($siteSettings->email)
-                        <li>
-                            <i class="bi bi-envelope" aria-hidden="true"></i>
-                            <a href="mailto:{{ $siteSettings->email }}">{{ $siteSettings->email }}</a>
-                        </li>
-                    @endif
-                    @if ($siteSettings->working_hours)
-                        <li>
-                            <i class="bi bi-clock" aria-hidden="true"></i>
-                            <span>{{ $siteSettings->working_hours }}</span>
-                        </li>
-                    @endif
+                    @endforeach
                 </ul>
             </div>
         </div>

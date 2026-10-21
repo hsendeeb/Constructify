@@ -31,30 +31,46 @@ class CountersRelationManager extends RelationManager
 
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
-        return $ownerRecord->getAttribute('key') === 'about'
+        return in_array($ownerRecord->getAttribute('key'), ['about', 'contact'], true)
             && parent::canViewForRecord($ownerRecord, $pageClass);
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return $ownerRecord->getAttribute('key') === 'contact'
+            ? 'Contact Cards'
+            : 'About Cards';
     }
 
     public function form(Schema $schema): Schema
     {
+        $isContact = $this->isContactSection();
+
         return $schema
             ->components([
                 Grid::make(2)->schema([
                     TextInput::make('value')
-                        ->label('Heading')
+                        ->label($isContact ? 'Card label' : 'Heading')
                         ->required()
                         ->maxLength(50)
-                        ->placeholder('Licensed & Insured')
-                        ->helperText('Any text shown as the card heading.'),
+                        ->placeholder($isContact ? 'Call us' : 'Licensed & Insured')
+                        ->helperText($isContact
+                            ? 'Small label shown above the contact detail.'
+                            : 'Any text shown as the card heading.'),
                     TextInput::make('label')
-                        ->label('Supporting text')
+                        ->label($isContact ? 'Contact detail' : 'Supporting text')
                         ->required()
                         ->maxLength(255)
-                        ->placeholder('Fully certified with comprehensive coverage.'),
+                        ->placeholder($isContact ? '+1 (555) 234-6789' : 'Fully certified with comprehensive coverage.'),
                     Select::make('icon')
-                        ->options(IconOptions::heroicons())
+                        ->options($isContact ? IconOptions::contact() : IconOptions::heroicons())
                         ->searchable()
                         ->helperText('Icon shown at the top of the card.'),
+                    TextInput::make('link_url')
+                        ->label('Link (optional)')
+                        ->maxLength(2048)
+                        ->visible($isContact)
+                        ->helperText('A "tel:" or "mailto:" link, or any URL. Leave empty to show plain text.'),
                     TextInput::make('sort')
                         ->numeric()
                         ->default(0)
@@ -68,21 +84,27 @@ class CountersRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $isContact = $this->isContactSection();
+
         return $table
             ->recordTitleAttribute('label')
             ->reorderable('sort')
             ->defaultSort('sort')
             ->columns([
                 TextColumn::make('value')
-                    ->label('Heading')
+                    ->label($isContact ? 'Card label' : 'Heading')
                     ->weight('bold')
                     ->searchable(),
                 TextColumn::make('label')
-                    ->label('Supporting text')
+                    ->label($isContact ? 'Contact detail' : 'Supporting text')
                     ->searchable(),
                 TextColumn::make('icon')
                     ->label('Icon')
                     ->placeholder('Default icon'),
+                TextColumn::make('link_url')
+                    ->label('Link')
+                    ->placeholder('None')
+                    ->visible($isContact),
                 IconColumn::make('is_active')
                     ->label('Visible')
                     ->boolean(),
@@ -99,5 +121,10 @@ class CountersRelationManager extends RelationManager
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    protected function isContactSection(): bool
+    {
+        return $this->getOwnerRecord()->getAttribute('key') === 'contact';
     }
 }

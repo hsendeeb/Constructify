@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Counter;
 use App\Models\NavigationLink;
 use App\Models\Service;
 use App\Models\SiteSetting;
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
                 'navigationLinks' => NavigationLink::query()->active()->ordered()->get(),
                 'socialLinks' => SocialLink::query()->active()->ordered()->get(),
                 'footerServices' => Service::query()->active()->ordered()->limit(4)->get(),
+                'contactCounters' => Counter::query()->active()->ordered()->forSection('contact')->get(),
             ]);
         });
     }

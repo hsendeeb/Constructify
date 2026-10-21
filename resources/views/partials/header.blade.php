@@ -1,6 +1,7 @@
 @php
     $logoUrl = $siteSettings->imageUrl('logo');
-    $phoneUrl = \App\Support\SiteLink::phone($siteSettings->phone);
+    $phoneCard = \App\Support\ContactDetails::phone($contactCounters);
+    $phoneUrl = $phoneCard ? \App\Support\SiteLink::resolve($phoneCard->link_url) : null;
     $isProjectsPage = request()->routeIs('projects.*');
 @endphp
 
@@ -45,10 +46,10 @@
                 </ul>
 
                 <div class="header-actions">
-                    @if ($phoneUrl)
+                    @if ($phoneCard && $phoneUrl)
                         <a class="header-phone" href="{{ $phoneUrl }}">
                             <i class="bi bi-telephone" aria-hidden="true"></i>
-                            <span>{{ $siteSettings->phone }}</span>
+                            <span>{{ $phoneCard->label }}</span>
                         </a>
                     @endif
 

@@ -60,6 +60,13 @@ class SectionForm
                                 Textarea::make('subtitle')
                                     ->rows(5)
                                     ->columnSpanFull(),
+                                TextInput::make('map_embed_url')
+                                    ->label('Map embed URL')
+                                    ->url()
+                                    ->maxLength(2048)
+                                    ->visible(fn (Get $get): bool => $get('key') === 'contact')
+                                    ->helperText('Optional Google Maps embed URL. The map is hidden when empty.')
+                                    ->columnSpanFull(),
                             ]),
                         Tab::make('Media')
                             ->icon('heroicon-o-photo')
@@ -94,11 +101,15 @@ class SectionForm
                                     TextInput::make('primary_button_text')->maxLength(255),
                                     TextInput::make('primary_button_url')
                                         ->maxLength(2048)
-                                        ->helperText('A path, anchor (#contact), or full URL.'),
+                                        ->helperText(fn (Get $get): string => $get('key') === 'contact'
+                                            ? 'Contact: a "tel:" link follows the phone number from the Contact Cards below.'
+                                            : 'A path, anchor (#contact), or full URL.'),
                                     TextInput::make('secondary_button_text')->maxLength(255),
                                     TextInput::make('secondary_button_url')
                                         ->maxLength(2048)
-                                        ->helperText('Leave both text and URL empty to hide this button.'),
+                                        ->helperText(fn (Get $get): string => $get('key') === 'contact'
+                                            ? 'Contact: a "mailto:" link follows the email from the Contact Cards below.'
+                                            : 'Leave both text and URL empty to hide this button.'),
                                 ]),
                             ]),
                         Tab::make('Settings')

@@ -35,6 +35,26 @@ class IconOptions
     }
 
     /**
+     * Bootstrap Icons available for contact cards.
+     *
+     * @return array<string, string>
+     */
+    public static function contact(): array
+    {
+        return [
+            'bi-telephone' => 'Phone',
+            'bi-envelope' => 'Email',
+            'bi-geo-alt' => 'Location',
+            'bi-clock' => 'Clock',
+            'bi-whatsapp' => 'WhatsApp',
+            'bi-chat-dots' => 'Chat',
+            'bi-globe2' => 'Website',
+            'bi-buildings' => 'Building',
+            'bi-link-45deg' => 'Link',
+        ];
+    }
+
+    /**
      * Bootstrap Icons available for social links.
      *
      * @return array<string, string>

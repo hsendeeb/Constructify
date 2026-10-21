@@ -22,6 +22,7 @@ class CounterFactory extends Factory
             'value' => fake()->numberBetween(10, 900).'+',
             'label' => fake()->words(2, true),
             'icon' => 'heroicon-o-chart-bar',
+            'link_url' => null,
             'sort' => 0,
             'is_active' => true,
         ];

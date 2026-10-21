@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\CounterFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,12 +13,13 @@ use Illuminate\Database\Eloquent\Model;
     'value',
     'label',
     'icon',
+    'link_url',
     'sort',
     'is_active',
 ])]
 class Counter extends Model
 {
-    /** @use HasFactory<\Database\Factories\CounterFactory> */
+    /** @use HasFactory<CounterFactory> */
     use HasFactory;
 
     /**
