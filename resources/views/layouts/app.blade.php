@@ -33,6 +33,7 @@
     </main>
 
     @include('partials.footer')
+    @include('partials.project-lightbox')
 
     <button type="button" class="back-to-top" aria-label="Back to top">
         <i class="bi bi-arrow-up" aria-hidden="true"></i>

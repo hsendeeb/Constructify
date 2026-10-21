@@ -208,6 +208,102 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const projectLightbox = document.querySelector('[data-project-lightbox]');
+    const projectLightboxImage = projectLightbox?.querySelector('[data-project-lightbox-image]');
+
+    if (projectLightbox && projectLightboxImage) {
+        const closeButtons = [...projectLightbox.querySelectorAll('[data-project-lightbox-close]')];
+        let lastTrigger = null;
+        let imageResetTimer;
+
+        const closeProjectLightbox = () => {
+            if (!projectLightbox.classList.contains('is-open')) {
+                return;
+            }
+
+            projectLightbox.classList.remove('is-open');
+            projectLightbox.setAttribute('aria-hidden', 'true');
+            projectLightbox.inert = true;
+            document.body.classList.remove('has-lightbox-open');
+
+            lastTrigger?.focus({ preventScroll: true });
+            lastTrigger = null;
+
+            window.clearTimeout(imageResetTimer);
+            imageResetTimer = window.setTimeout(() => {
+                if (!projectLightbox.classList.contains('is-open')) {
+                    projectLightboxImage.removeAttribute('src');
+                    projectLightboxImage.setAttribute('alt', '');
+                }
+            }, 300);
+        };
+
+        const openProjectLightbox = (trigger) => {
+            const src = trigger.dataset.projectLightboxSrc;
+
+            if (!src) {
+                return;
+            }
+
+            window.clearTimeout(imageResetTimer);
+            lastTrigger = trigger;
+            projectLightboxImage.src = src;
+            projectLightboxImage.alt = trigger.dataset.projectLightboxAlt ?? '';
+            projectLightbox.inert = false;
+            projectLightbox.classList.add('is-open');
+            projectLightbox.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('has-lightbox-open');
+
+            window.requestAnimationFrame(() => {
+                projectLightbox
+                    .querySelector('[data-project-lightbox-close]')
+                    ?.focus({ preventScroll: true });
+            });
+        };
+
+        document.querySelectorAll('[data-project-lightbox-open]').forEach((trigger) => {
+            trigger.addEventListener('click', () => openProjectLightbox(trigger));
+        });
+
+        closeButtons.forEach((button) => {
+            button.addEventListener('click', closeProjectLightbox);
+        });
+
+        projectLightbox.addEventListener('keydown', (event) => {
+            if (event.key !== 'Tab' || !projectLightbox.classList.contains('is-open')) {
+                return;
+            }
+
+            const focusable = [
+                ...projectLightbox.querySelectorAll(
+                    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+                ),
+            ];
+
+            if (focusable.length === 0) {
+                return;
+            }
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && projectLightbox.classList.contains('is-open')) {
+                event.preventDefault();
+                closeProjectLightbox();
+            }
+        });
+    }
+
     const revealItems = document.querySelectorAll('.reveal');
 
     if (!('IntersectionObserver' in window)) {

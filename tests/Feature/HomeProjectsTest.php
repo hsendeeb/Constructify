@@ -20,6 +20,10 @@ class HomeProjectsTest extends TestCase
 
     public function test_home_projects_section_lists_all_active_projects_with_category_filters(): void
     {
+        Project::query()
+            ->where('slug', 'skyline-residences')
+            ->update(['image' => 'projects/skyline-residences.jpg']);
+
         $response = $this->get(route('home'));
 
         $response->assertOk()
@@ -28,6 +32,11 @@ class HomeProjectsTest extends TestCase
             ->assertSee('data-project-filter-value="commercial"', false)
             ->assertSee('data-project-filter-value="infrastructure"', false)
             ->assertSee('data-project-category="residential"', false)
+            ->assertSee('data-project-lightbox', false)
+            ->assertSee('data-project-lightbox-open', false)
+            ->assertSee('data-project-lightbox-close', false)
+            ->assertSee('aria-label="View all projects"', false)
+            ->assertSee('aria-label="Close full screen image"', false)
             ->assertSee('Skyline Residences')
             ->assertSee('Harbourview Apartments')
             ->assertSee('The Vista Offices')

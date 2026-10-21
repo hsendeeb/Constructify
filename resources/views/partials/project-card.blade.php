@@ -38,4 +38,24 @@
             <p>{{ $project->description }}</p>
         @endif
     </div>
+
+    <div class="project-card__actions">
+        @if ($image)
+            <button type="button" class="project-card__action"
+                data-project-lightbox-open
+                data-project-lightbox-src="{{ $image }}"
+                data-project-lightbox-alt="{{ $project->title }}"
+                aria-label="View {{ $project->title }} image full screen"
+                title="View full screen">
+                <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+            </button>
+        @endif
+
+        <a class="project-card__action"
+            href="{{ route('projects.index') }}"
+            aria-label="View all projects"
+            title="View all projects">
+            <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+        </a>
+    </div>
 </article>
