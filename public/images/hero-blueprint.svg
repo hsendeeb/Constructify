@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2233"/>
+      <stop offset="0.55" stop-color="#0E293C"/>
+      <stop offset="1" stop-color="#123449"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#F26522" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#F26522" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" stroke="#FFFFFF" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+    <pattern id="micro" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path d="M14 0H0V14" stroke="#FFFFFF" stroke-opacity="0.022" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="900" fill="url(#micro)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+
+  <circle cx="1260" cy="710" r="520" fill="url(#glow)"/>
+
+  <g opacity="0.5" stroke="#FFFFFF" stroke-opacity="0.13" stroke-width="2">
+    <path d="M1030 760V430h190v330"/>
+    <path d="M1070 760V480h48v280M1126 760V480h48v280M1180 760V480h32v280"/>
+    <path d="M1030 430l96-74 94 74"/>
+    <path d="M1076 392h100"/>
+    <path d="M1126 356v74"/>
+  </g>
+
+  <g opacity="0.42" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2">
+    <path d="M1290 800V520h180v280"/>
+    <path d="M1330 800V570h42v230M1390 800V570h42v230"/>
+    <path d="M1270 520h220"/>
+  </g>
+
+  <g stroke="#F98A4B" stroke-opacity="0.5" stroke-width="3">
+    <path d="M700 760V250"/>
+    <path d="M676 760h48"/>
+    <path d="M700 300h330"/>
+    <path d="M1010 300v42"/>
+    <path d="M700 250l120-78"/>
+    <path d="M700 250l-120-78"/>
+    <path d="M608 206h184"/>
+    <path d="M700 250v160"/>
+    <path d="M760 250v90"/>
+    <path d="M820 250v130"/>
+  </g>
+
+  <g opacity="0.55" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="2">
+    <path d="M240 800V610h150v190"/>
+    <path d="M280 800V660h34v140M340 800V660h34v140"/>
+    <path d="M216 610h198"/>
+    <path d="M360 800V560h120v240"/>
+    <path d="M392 800V608h26v192M432 800V608h26v192"/>
+  </g>
+
+  <g opacity="0.2" stroke="#FFFFFF" stroke-opacity="0.11" stroke-width="1.5">
+    <path d="M0 800h1600"/>
+    <path d="M0 814h1600"/>
+    <path d="M140 800v-90M150 800v-60M160 800v-120"/>
+  </g>
+</svg>
