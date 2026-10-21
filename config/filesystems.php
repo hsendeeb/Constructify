@@ -41,7 +41,9 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            // Relative so uploaded files resolve against whichever host is serving
+            // the app (e.g. constructify.test in Herd and localhost:8000 via `artisan serve`).
+            'url' => '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
