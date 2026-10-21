@@ -116,6 +116,98 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', updateActiveNavigation, { passive: true });
     window.addEventListener('resize', updateActiveNavigation);
 
+    document.querySelectorAll('[data-project-filter]').forEach((root) => {
+        const grid = root.querySelector('[data-project-grid]');
+        const emptyState = root.querySelector('[data-project-empty]');
+        const pills = [...root.querySelectorAll('[data-project-filter-value]')];
+
+        if (!grid || pills.length === 0) {
+            return;
+        }
+
+        const cards = [...grid.querySelectorAll('[data-project-card]')];
+        let switchTimer;
+
+        const animateCardsIn = (visibleCards) => {
+            if (prefersReducedMotion.matches) {
+                return;
+            }
+
+            visibleCards.forEach((card, index) => {
+                card.classList.add('is-visible');
+                card.getAnimations().forEach((animation) => animation.cancel());
+
+                if (typeof card.animate !== 'function') {
+                    return;
+                }
+
+                card.animate(
+                    [
+                        { opacity: 0, transform: 'translateY(18px) scale(0.98)' },
+                        { opacity: 1, transform: 'none' },
+                    ],
+                    {
+                        duration: 440,
+                        delay: index * 60,
+                        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                        fill: 'backwards',
+                    },
+                );
+            });
+        };
+
+        const applyFilter = (value, pill) => {
+            const visibleCards = cards.filter(
+                (card) => !value || card.dataset.projectCategory === value,
+            );
+
+            window.clearTimeout(switchTimer);
+            grid.classList.add('is-switching');
+
+            if (!prefersReducedMotion.matches && typeof pill.animate === 'function') {
+                pill.animate(
+                    [
+                        { transform: 'scale(0.94)' },
+                        { transform: 'scale(1.05)' },
+                        { transform: 'scale(1)' },
+                    ],
+                    { duration: 300, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+                );
+            }
+
+            switchTimer = window.setTimeout(() => {
+                const visibleSet = new Set(visibleCards);
+
+                cards.forEach((card) => {
+                    card.hidden = !visibleSet.has(card);
+                });
+
+                if (emptyState) {
+                    emptyState.hidden = visibleCards.length > 0;
+                }
+
+                grid.classList.remove('is-switching');
+                animateCardsIn(visibleCards);
+            }, prefersReducedMotion.matches ? 0 : 150);
+        };
+
+        pills.forEach((pill) => {
+            pill.addEventListener('click', () => {
+                if (pill.classList.contains('is-active')) {
+                    return;
+                }
+
+                pills.forEach((candidate) => {
+                    const isActive = candidate === pill;
+                    candidate.classList.toggle('is-active', isActive);
+                    candidate.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+
+                applyFilter(pill.dataset.projectFilterValue ?? '', pill);
+            });
+        });
+    });
+
     const revealItems = document.querySelectorAll('.reveal');
 
     if (!('IntersectionObserver' in window)) {

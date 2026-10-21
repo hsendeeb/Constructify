@@ -21,7 +21,8 @@
 
     @include('partials.projects-home', [
         'section' => $sections->get('projects'),
-        'projects' => $featuredProjects,
+        'categories' => $projectCategories,
+        'projects' => $projects,
     ])
 
     @include('partials.contact', [

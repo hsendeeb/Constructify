@@ -17,10 +17,32 @@
             </div>
 
             @if ($projects->isNotEmpty())
-                <div class="projects-grid">
-                    @foreach ($projects as $project)
-                        @include('partials.project-card', ['project' => $project])
-                    @endforeach
+                <div data-project-filter>
+                    @if ($categories->isNotEmpty())
+                        <div class="filter-pills reveal" role="group" aria-label="Filter projects by category">
+                            <button type="button" class="filter-pill is-active"
+                                data-project-filter-value="" aria-pressed="true">
+                                All Projects
+                            </button>
+
+                            @foreach ($categories as $category)
+                                <button type="button" class="filter-pill"
+                                    data-project-filter-value="{{ $category->slug }}" aria-pressed="false">
+                                    {{ $category->name }}
+                                </button>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <div class="projects-grid" data-project-grid>
+                        @foreach ($projects as $project)
+                            @include('partials.project-card', ['project' => $project])
+                        @endforeach
+                    </div>
+
+                    <div class="text-center py-5" data-project-empty hidden>
+                        <p class="mb-0">No projects match this category yet.</p>
+                    </div>
                 </div>
             @else
                 <div class="text-center py-5">
