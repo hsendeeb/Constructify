@@ -1,10 +1,11 @@
 @php
     $footerLogo = $siteSettings->imageUrl('logo');
+    $footerColumnCount = max($footerLinkGroups->count(), 1);
 @endphp
 
 <footer class="site-footer">
     <div class="container">
-        <div class="footer-grid">
+        <div class="footer-grid" style="--footer-group-count: {{ $footerColumnCount }}">
             <div class="footer-brand">
                 <a class="brand" href="{{ route('home') }}">
                     <span class="brand__mark">
@@ -33,32 +34,21 @@
                 @endif
             </div>
 
-            <div>
-                <h2 class="footer-title">Quick Links</h2>
-                <ul class="footer-links">
-                    @foreach ($navigationLinks as $link)
-                        <li>
-                            <a href="{{ \App\Support\SiteLink::resolve($link->url) }}"
-                                @if ($link->target === '_blank') target="_blank" rel="noopener noreferrer" @endif>
-                                {{ $link->label }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-
-            <div>
-                <h2 class="footer-title">Services</h2>
-                <ul class="footer-links">
-                    @forelse ($footerServices as $service)
-                        <li>
-                            <a href="{{ \App\Support\SiteLink::resolve('#services') }}">{{ $service->title }}</a>
-                        </li>
-                    @empty
-                        <li><span>Services will appear here.</span></li>
-                    @endforelse
-                </ul>
-            </div>
+            @foreach ($footerLinkGroups as $group)
+                <div>
+                    <h2 class="footer-title">{{ $group->title }}</h2>
+                    <ul class="footer-links">
+                        @foreach ($group->links as $link)
+                            <li>
+                                <a href="{{ \App\Support\SiteLink::resolve($link->url) }}"
+                                    @if ($link->target === '_blank') target="_blank" rel="noopener noreferrer" @endif>
+                                    {{ $link->label }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endforeach
 
             <div>
                 <h2 class="footer-title">Contact</h2>
@@ -78,7 +68,7 @@
         </div>
 
         <div class="footer-bottom">
-            <span>{{ $siteSettings->copyright ?: '© '.date('Y').' '.$siteSettings->brand_name.'. All rights reserved.' }}</span>
+            <span>{{ $siteSettings->copyright ?: 'Ac '.date('Y').' '.$siteSettings->brand_name.'. All rights reserved.' }}</span>
             @if ($siteSettings->tagline)
                 <span>{{ $siteSettings->tagline }}</span>
             @endif
