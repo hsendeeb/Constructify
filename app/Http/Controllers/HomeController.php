@@ -27,6 +27,7 @@ class HomeController extends Controller
             'heroCounters' => Counter::query()->active()->ordered()->forSection('hero')->get(),
             'aboutCounters' => Counter::query()->active()->ordered()->forSection('about')->get(),
             'services' => Service::query()->active()->ordered()->get(),
+            'trackingCounters' => Counter::query()->active()->ordered()->forSection('tracking')->get(),
             'projectCategories' => ProjectCategory::query()->active()->ordered()->get(),
             'projects' => Project::query()
                 ->with('category')

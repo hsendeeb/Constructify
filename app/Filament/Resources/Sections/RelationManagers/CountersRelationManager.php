@@ -31,41 +31,50 @@ class CountersRelationManager extends RelationManager
 
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
-        return in_array($ownerRecord->getAttribute('key'), ['about', 'contact'], true)
+        return in_array($ownerRecord->getAttribute('key'), ['about', 'contact', 'tracking'], true)
             && parent::canViewForRecord($ownerRecord, $pageClass);
     }
 
     public static function getTitle(Model $ownerRecord, string $pageClass): string
     {
-        return $ownerRecord->getAttribute('key') === 'contact'
-            ? 'Contact Cards'
-            : 'About Cards';
+        return match ($ownerRecord->getAttribute('key')) {
+            'contact' => 'Contact Cards',
+            'tracking' => 'Track Record Stats',
+            default => 'About Cards',
+        };
     }
 
     public function form(Schema $schema): Schema
     {
         $isContact = $this->isContactSection();
+        $isTracking = $this->isTrackingSection();
 
         return $schema
             ->components([
                 Grid::make(2)->schema([
                     TextInput::make('value')
-                        ->label($isContact ? 'Card label' : 'Heading')
+                        ->label($isContact ? 'Card label' : ($isTracking ? 'Counter value' : 'Heading'))
                         ->required()
                         ->maxLength(50)
-                        ->placeholder($isContact ? 'Call us' : 'Licensed & Insured')
+                        ->placeholder($isContact ? 'Call us' : ($isTracking ? '850+' : 'Licensed & Insured'))
                         ->helperText($isContact
                             ? 'Small label shown above the contact detail.'
-                            : 'Any text shown as the card heading.'),
+                            : ($isTracking
+                                ? 'Number or short value shown prominently on the card.'
+                                : 'Any text shown as the card heading.')),
                     TextInput::make('label')
-                        ->label($isContact ? 'Contact detail' : 'Supporting text')
+                        ->label($isContact ? 'Contact detail' : ($isTracking ? 'Caption' : 'Supporting text'))
                         ->required()
                         ->maxLength(255)
-                        ->placeholder($isContact ? '+1 (555) 234-6789' : 'Fully certified with comprehensive coverage.'),
+                        ->placeholder($isContact
+                            ? '+1 (555) 234-6789'
+                            : ($isTracking ? 'Projects Delivered' : 'Fully certified with comprehensive coverage.')),
                     Select::make('icon')
                         ->options($isContact ? IconOptions::contact() : IconOptions::heroicons())
                         ->searchable()
-                        ->helperText('Icon shown at the top of the card.'),
+                        ->helperText($isTracking
+                            ? 'Icon shown next to the counter.'
+                            : 'Icon shown at the top of the card.'),
                     TextInput::make('link_url')
                         ->label('Link (optional)')
                         ->maxLength(2048)
@@ -85,6 +94,7 @@ class CountersRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         $isContact = $this->isContactSection();
+        $isTracking = $this->isTrackingSection();
 
         return $table
             ->recordTitleAttribute('label')
@@ -92,11 +102,11 @@ class CountersRelationManager extends RelationManager
             ->defaultSort('sort')
             ->columns([
                 TextColumn::make('value')
-                    ->label($isContact ? 'Card label' : 'Heading')
+                    ->label($isContact ? 'Card label' : ($isTracking ? 'Counter value' : 'Heading'))
                     ->weight('bold')
                     ->searchable(),
                 TextColumn::make('label')
-                    ->label($isContact ? 'Contact detail' : 'Supporting text')
+                    ->label($isContact ? 'Contact detail' : ($isTracking ? 'Caption' : 'Supporting text'))
                     ->searchable(),
                 TextColumn::make('icon')
                     ->label('Icon')
@@ -126,5 +136,10 @@ class CountersRelationManager extends RelationManager
     protected function isContactSection(): bool
     {
         return $this->getOwnerRecord()->getAttribute('key') === 'contact';
+    }
+
+    protected function isTrackingSection(): bool
+    {
+        return $this->getOwnerRecord()->getAttribute('key') === 'tracking';
     }
 }

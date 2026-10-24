@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 class SectionSeeder extends Seeder
 {
     /**
-     * Seed the five editable page sections.
+     * Seed the editable page sections.
      */
     public function run(): void
     {
@@ -55,6 +55,17 @@ class SectionSeeder extends Seeder
                 'sort' => 3,
             ],
             [
+                'key' => 'tracking',
+                'label' => 'Track Record',
+                'eyebrow' => 'Our Track Record',
+                'title' => 'Numbers That Speak for',
+                'title_highlight' => 'Our Commitment',
+                'subtitle' => 'Every project we hand over adds to a record built on trust, craftsmanship, and measurable results. Here is what that commitment looks like in numbers.',
+                'primary_button_text' => 'View Our Projects',
+                'primary_button_url' => '/projects',
+                'sort' => 4,
+            ],
+            [
                 'key' => 'projects',
                 'label' => 'Projects',
                 'eyebrow' => 'Our Portfolio',
@@ -63,7 +74,7 @@ class SectionSeeder extends Seeder
                 'subtitle' => 'A selection of residential, commercial, and infrastructure work delivered by Constructify teams across the region.',
                 'primary_button_text' => 'View All Projects',
                 'primary_button_url' => '/projects',
-                'sort' => 4,
+                'sort' => 5,
             ],
             [
                 'key' => 'contact',
@@ -76,7 +87,7 @@ class SectionSeeder extends Seeder
                 'primary_button_url' => 'tel:+15552346789',
                 'secondary_button_text' => 'Send an Email',
                 'secondary_button_url' => 'mailto:hello@constructify.com',
-                'sort' => 5,
+                'sort' => 6,
             ],
         ];
 

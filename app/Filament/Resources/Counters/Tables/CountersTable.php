@@ -24,6 +24,7 @@ class CountersTable
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'hero' => 'Hero ribbon',
                         'about' => 'About cards',
+                        'tracking' => 'Track record',
                         default => str($state)->headline()->toString(),
                     })
                     ->color('warning'),
@@ -42,6 +43,7 @@ class CountersTable
                     ->options([
                         'hero' => 'Hero ribbon',
                         'about' => 'About cards',
+                        'tracking' => 'Track record',
                     ]),
                 TernaryFilter::make('is_active')
                     ->label('Visibility'),

@@ -24,6 +24,7 @@ class CounterForm
                                 ->options([
                                     'hero' => 'Hero ribbon (home page)',
                                     'about' => 'About statistics cards',
+                                    'tracking' => 'Track record cards',
                                 ])
                                 ->required()
                                 ->default('hero'),
@@ -38,7 +39,7 @@ class CounterForm
                             Select::make('icon')
                                 ->options(IconOptions::heroicons())
                                 ->searchable()
-                                ->helperText('Used by the about statistics cards.'),
+                                ->helperText('Used by the about and track record cards.'),
                             TextInput::make('sort')
                                 ->numeric()
                                 ->default(0)

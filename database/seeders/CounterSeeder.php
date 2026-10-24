@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 class CounterSeeder extends Seeder
 {
     /**
-     * Seed the hero ribbon and about statistics.
+     * Seed the hero ribbon, about, and track record statistics.
      */
     public function run(): void
     {
@@ -22,6 +22,10 @@ class CounterSeeder extends Seeder
             ['section_key' => 'about', 'value' => '620+', 'label' => 'Satisfied Clients', 'icon' => 'heroicon-o-face-smile', 'sort' => 2],
             ['section_key' => 'about', 'value' => '120+', 'label' => 'Skilled Workers', 'icon' => 'heroicon-o-users', 'sort' => 3],
             ['section_key' => 'about', 'value' => '35+', 'label' => 'Industry Awards', 'icon' => 'heroicon-o-trophy', 'sort' => 4],
+            ['section_key' => 'tracking', 'value' => '850+', 'label' => 'Projects Delivered', 'icon' => 'heroicon-o-chart-bar', 'sort' => 1],
+            ['section_key' => 'tracking', 'value' => '620+', 'label' => 'Satisfied Clients', 'icon' => 'heroicon-o-face-smile', 'sort' => 2],
+            ['section_key' => 'tracking', 'value' => '120+', 'label' => 'Skilled Workers', 'icon' => 'heroicon-o-users', 'sort' => 3],
+            ['section_key' => 'tracking', 'value' => '35+', 'label' => 'Industry Awards', 'icon' => 'heroicon-o-trophy', 'sort' => 4],
         ];
 
         foreach ($counters as $counter) {

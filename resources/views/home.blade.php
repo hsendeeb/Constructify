@@ -19,6 +19,11 @@
         'services' => $services,
     ])
 
+    @include('partials.tracking-record', [
+        'section' => $sections->get('tracking'),
+        'trackingCounters' => $trackingCounters,
+    ])
+
     @include('partials.projects-home', [
         'section' => $sections->get('projects'),
         'categories' => $projectCategories,
