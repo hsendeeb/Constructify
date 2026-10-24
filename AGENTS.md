@@ -147,4 +147,14 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Run `vendor/bin/pest` to call the test runner directly. It accepts the same file path and `--filter=testName` arguments.
 - After the feature tests pass, ask the user to run the complete suite with `php artisan test --compact`.
 
+=== project rules ===
+
+# Database & Seeders
+
+- NEVER run seeders (`db:seed`, `migrate --seed`, `migrate:fresh --seed`, `db:wipe`, `migrate:refresh`) on this project. The database contains real content the user entered through the admin panel, and the seeders overwrite it with demo data (they reset `sections.image` / `secondary_image` to null and rewrite the contact phone number to the placeholder `+1 (555) 234-6789`).
+- The seeders exist only as the initial skeleton for a brand-new database. If a change needs new seed rows, edit the seeder file only and let the user decide when to run it.
+- For local testing, use `RefreshDatabase` inside Pest tests (they run against the test database), never against the development database.
+- To change content, use the Filament admin panel or targeted `updateOrCreate`/`update` calls on specific rows — never a bulk seed.
+- Before any command that could touch the development database, confirm with the user.
+
 </laravel-boost-guidelines>

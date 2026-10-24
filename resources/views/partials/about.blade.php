@@ -57,6 +57,24 @@
                             @endforeach
                         </div>
                     @endif
+
+                    @if ($section->primary_button_text || $section->secondary_button_text)
+                        <div class="about-actions">
+                            @if ($section->primary_button_text)
+                                <a class="btn-vp btn-vp-primary" href="{{ \App\Support\SiteLink::resolve($section->primary_button_url) }}">
+                                    {{ $section->primary_button_text }}
+                                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            @endif
+
+                            @if ($section->secondary_button_text)
+                                <a class="btn-vp btn-vp-ghost" href="{{ \App\Support\SiteLink::resolve($section->secondary_button_url) }}">
+                                    {{ $section->secondary_button_text }}
+                                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
